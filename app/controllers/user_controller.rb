@@ -4,8 +4,9 @@ class UserController < ApplicationController
    render({ :template => "user/index.html.erb" })
   end
   def show
-     user = params.fetch("path_id")
-     @each_user = user.at(0)
+     user = params.fetch("username")
+     matching_user = User.where({:id=>user})
+     @the_user = matching_user.first
     render({:template => "user/show.html.erb"})
   end
   

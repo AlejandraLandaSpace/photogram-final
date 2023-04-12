@@ -1,1 +1,67 @@
-<h1><%=@each_user.username%></h1>
+<h1><%=@the_user.username%></h1>
+
+<dl>
+  <dt>Private</dt>
+  <%if @the_user.private == true%>
+  <dd>true</dd>
+  <%else%>
+  <dd>false</dd>
+   <%end%>
+  <dt>Followers</dt>
+  <dd>
+   
+
+
+      <div>
+          <a href="/delete_follow_request/2138">
+            Unfollow
+          </a>
+    </div>
+
+  </dd>
+
+  <dt>Following</dt>
+  <dd></dd>
+<nav>
+  <ul>
+    <li>
+      <a href="/users/<%=@the_user.username%>">Profile</a>
+    </li>
+    <li>
+      <a href="/users/<%=@the_user.username%>/liked_photos">Liked photos</a>
+    </li>
+    <li>
+      <a href="/users/<%=@the_user.username%>/feed">Feed</a>
+    </li>
+    <li>
+      <a href="/users/<%=@the_user.username%>/discover">Discover</a>
+    </li>
+  </ul>
+</nav>
+
+<h2>Own photos ()</h2>
+<table border="1">
+  <tr>
+    <th>
+      Image
+    </th>
+
+    <th>
+      Owner
+    </th>
+
+    <th>
+      Caption
+    </th>
+
+    <th>
+      Posted
+    </th>
+
+    <th>
+      Likes
+    </th>
+
+    <th></th>
+  </tr>
+  
