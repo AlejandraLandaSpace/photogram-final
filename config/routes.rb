@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   # Routes for the Follow request resource:
+  get("/", {:controller => "home", :action=>"index"})
+  get("/users", {:controller => "user", :action=>"index"})
+  
 
   # CREATE
   post("/insert_follow_request", { :controller => "follow_requests", :action => "create" })
