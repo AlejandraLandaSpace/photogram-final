@@ -1,6 +1,7 @@
 class UserController < ApplicationController
   def index
     @user = User.all
+    
    render({ :template => "user/index.html.erb" })
   end
   def show
@@ -11,6 +12,15 @@ class UserController < ApplicationController
      the_photos = Photo.all
      @photo = Photo.where({owner_id:matching_user.id})
     render({:template => "user/show.html.erb"})
+  end
+  def current_user
+    the_id = session[:user_id]
+    
+    @current_user = User.where({ :id => the_id }).first
+  end
+  def follower_status
+    
+
   end
   
 end

@@ -7,21 +7,33 @@
   <%else%>
   <dd>false</dd>
    <%end%>
+   <%@followers = FollowRequest.where({:recipient_id=>@the_user.id})%>
   <dt>Followers</dt>
-  <dd>
+  <dd><%=@followers.count%></dd>
+
    
 
 
       <div>
+       <%@following = FollowRequest.where({:sender_id => @the_user.id})%>
+      <%if @following == true %>
           <a href="/delete_follow_request/2138">
             Unfollow
           </a>
+          <%else%>
+          <form action="/insert_follow_request" method="post">
+            <input type="hidden" name="query_recipient_id" value="<%=@current_user.id%>">
+          <button>
+            Follow
+          </button>
+          </form>
+          <%end%>
     </div>
 
   </dd>
-
+  
   <dt>Following</dt>
-  <dd></dd>
+  <dd><%=@following.count%></dd>
 <nav>
   <ul>
     <li>
@@ -72,7 +84,7 @@
   <td><%=photo.caption%></td>
   <td><%=photo.created_at%></td>
   <td><%=photo.likes_count%></td>
-  <td><a href="/">Show details</a></td>
+  <td><a href="/photos/<%=photo.id%>">Show details</a></td>
   </tr>
      <% end %>
   
