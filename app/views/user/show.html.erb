@@ -39,7 +39,7 @@
   </ul>
 </nav>
 
-<h2>Own photos (<%=@photo.count%>%)</h2>
+<h2>Own photos (<%=@photo.count%>)</h2>
 <table border="1">
   <tr>
     <th>
@@ -67,8 +67,8 @@
  
     <% @photo.each do |photo|%>
   <tr>
-  <td><%=photo.image%></td>
-  <td><%=photo.owner_id%></td>
+  <td><img src="<%=photo.image%>"></td>
+  <td><%=@the_user.username%></td>
   <td><%=photo.caption%></td>
   <td><%=photo.created_at%></td>
   <td><%=photo.likes_count%></td>
