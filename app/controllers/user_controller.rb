@@ -5,8 +5,12 @@ class UserController < ApplicationController
   end
   def show
      user = params.fetch("username")
-     matching_user = User.where({:id=>user})
+     matching_user = User.where({:username=>user})
      @the_user = matching_user.first
+
+     the_photos = Photo.all
+     @photo = the_photos.at(0)
+    
     render({:template => "user/show.html.erb"})
   end
   
