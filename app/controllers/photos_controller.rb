@@ -3,7 +3,8 @@ class PhotosController < ApplicationController
     matching_photos = Photo.all
 
     @list_of_photos = matching_photos.order({ :created_at => :desc })
-
+    user = User.all
+    @private_user = User.where({:private=>"true"})
     render({ :template => "photos/index.html.erb" })
   end
 
@@ -20,10 +21,8 @@ class PhotosController < ApplicationController
   def create
     the_photo = Photo.new
     the_photo.caption = params.fetch("query_caption")
-    the_photo.comments_count = params.fetch("query_comments_count")
     the_photo.image = params.fetch("query_image")
-    the_photo.likes_count = params.fetch("query_likes_count")
-    the_photo.owner_id = params.fetch("query_owner_id")
+    the_photo.owner_id = session.fetch(:user_id)
 
     if the_photo.valid?
       the_photo.save
@@ -38,10 +37,8 @@ class PhotosController < ApplicationController
     the_photo = Photo.where({ :id => the_id }).at(0)
 
     the_photo.caption = params.fetch("query_caption")
-    the_photo.comments_count = params.fetch("query_comments_count")
     the_photo.image = params.fetch("query_image")
-    the_photo.likes_count = params.fetch("query_likes_count")
-    the_photo.owner_id = params.fetch("query_owner_id")
+    the_photo.owner_id = session.fetch(:user_id)
 
     if the_photo.valid?
       the_photo.save
