@@ -7,7 +7,7 @@
       <th>
          Private?
       </th>
-      <th>Following?</th>
+      <th></th>
       <th></th>
    </tr>
    <% @users.each do |user| %>
@@ -19,7 +19,11 @@
          <td>No</td>
       <% end %>
 
+
+       <%if session.fetch(:user_id) != nil%>
       <% follow_request = @current_user.follow_request_for(user.id) %>
+
+      
       <% if follow_request.nil? %>
          <td>
             <form action="/insert_follow_request" method="post">
@@ -42,5 +46,6 @@
       <% end %>
       <td><a href="users/<%= user.username %>">Show details</a></td>
    <% end %>
+    <% end %>
    </tr>
 </table>
