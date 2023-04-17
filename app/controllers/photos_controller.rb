@@ -4,7 +4,7 @@ class PhotosController < ApplicationController
 
     @list_of_photos = matching_photos.order({ :created_at => :desc })
     user = User.all
-    @private_user = User.where({:private=>"true"})
+    @private_user = User.where({:private => false})
     render({ :template => "photos/index.html.erb" })
   end
 

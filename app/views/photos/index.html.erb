@@ -11,7 +11,7 @@
       Add a new photo
     </h2>
 
-    <form action="/insert_photo" method="post">
+    <form action="/insert_photo" method="post" enctype="multipart/form-data">
 
       <div>
         <label for="image_box">
@@ -63,7 +63,7 @@
         </th>
 
       </tr>
-      <%if @private_user != true%>
+      <%if @private_user%>
       <% @list_of_photos.each do |a_photo| %>
       <tr>
         <td>
