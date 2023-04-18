@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get("/users", {:controller => "users", :action=>"index"})
   get("/users/:username", {:controller => "users", :action=>"show"})
   get("/users/:username/liked_photos", {:controller => "users", :action=>"liked_photos"})
+  get("/users/:username/feed", {:controller => "users", :action=>"feed"})
 
   # CREATE
   post("/insert_follow_request", { :controller => "follow_requests", :action => "create" })
@@ -90,6 +91,7 @@ Rails.application.routes.draw do
   get("/edit_user_profile", { :controller => "user_authentication", :action => "edit_profile_form" })       
   # UPDATE RECORD
   post("/modify_user/:user_id", { :controller => "user_authentication", :action => "update" })
+  post("/modify_user", { :controller => "user_authentication", :action => "update" })
   
   # DELETE RECORD
   get("/cancel_user_account", { :controller => "user_authentication", :action => "destroy" })

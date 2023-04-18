@@ -1,3 +1,5 @@
+
+
 <h1><%=@the_user.username%></h1>
 
 <dl>
@@ -35,24 +37,7 @@
   
   <dt>Following</dt>
   <dd><%=@following.count%></dd>
-  <%if session.fetch(:user_id) == @the_user.id%>
-  <h4>Pending follow requests</h4>
   
-  
-  <dt>Edit user</dt>
-  <dd>
-    <form action="/modify_user/<%=@the_user.id%>" method="post" >
-      <label for="browser_username">Username</label>
-      <input id="browser_username" type="text" name="query_username" placeholder="Enter a username..."
-        value="<%=@the_user.username%>">
-
-      <label for="browser_private">Private?</label>
-      <input id="browser_private" type="checkbox" name="query_private" >
-
-      <button>Update user</button>
-    </form>
-  </dd>
-  <%end%>
 <nav>
   <ul>
     <li>
@@ -70,7 +55,9 @@
   </ul>
 </nav>
 
-<h2>Own photos (<%=@photo.count%>)</h2>
+
+<h2>Feed ()</h2>
+
 <table border="1">
   <tr>
     <th>
@@ -95,15 +82,22 @@
 
     <th></th>
   </tr>
- 
-    <% @photo.each do |photo|%>
+
   <tr>
-  <td><img src="<%=photo.image%>"></td>
-  <td><%=@the_user.username%></td>
-  <td><%=photo.caption%></td>
-  <td><%=time_ago_in_words(photo.created_at).gsub("about", " ").gsub("almost", " ").gsub("over", " ")%> ago</td>
-  <td><%=photo.likes_count%></td>
-  <td><a href="/photos/<%=photo.id%>">Show details</a></td>
+    <td>
+      <img src="https://robohash.org/necessitatibusquieos">
+    </td>
+
+    <td>
+      sharilyn
+    </td>
+
+    <td>
+      All dwarfs are bastards in their father&#39;s eyes
+    </td>
+
+    <td>
+      over 5 years ago
+    </td>
+
   </tr>
-     <% end %>
-  
