@@ -16,17 +16,18 @@
 
       <div>
        <%@following = FollowRequest.where({:sender_id => @the_user.id})%>
-      <%if @following == true %>
-          <a href="/delete_follow_request/2138">
+       <% follow_request = @current_user.follow_request_for(@the_user.id) %>
+            <% if follow_request.nil? %>
+              <form action="/insert_follow_request" method="post">
+              <input type="hidden" name="query_recipient_id" value="<%=@the_user.id%>">
+             <button>
+               Follow
+             </button>
+               </form>
+          <%elsif follow_request.status == "accepted" %>
+          <a href="/delete_follow_request/<%=follow_request.id%>">
             Unfollow
           </a>
-          <%else%>
-          <form action="/insert_follow_request" method="post">
-            <input type="hidden" name="query_recipient_id" value="<%=@current_user.id%>">
-          <button>
-            Follow
-          </button>
-          </form>
           <%end%>
     </div>
 
@@ -34,6 +35,21 @@
   
   <dt>Following</dt>
   <dd><%=@following.count%></dd>
+  <%if session.fetch(:user_id) == @the_user.id%>
+  <dt>Edit user</dt>
+  <dd>
+    <form action="/modify_user/<%=@the_user.id%>" method="post">
+      <label for="browser_username">Username</label>
+      <input id="browser_username" type="text" name="query_username" placeholder="Enter a username..."
+        value="<%=@the_user.username%>">
+
+      <label for="browser_private">Private?</label>
+      <input id="browser_private" type="checkbox" name="query_private" >
+
+      <button>Update user</button>
+    </form>
+  </dd>
+  <%end%>
 <nav>
   <ul>
     <li>
@@ -82,7 +98,7 @@
   <td><img src="<%=photo.image%>"></td>
   <td><%=@the_user.username%></td>
   <td><%=photo.caption%></td>
-  <td><%=photo.created_at%></td>
+  <td><%=time_ago_in_words(photo.created_at).gsub("about", " ").gsub("almost", " ").gsub("over", " ")%> ago</td>
   <td><%=photo.likes_count%></td>
   <td><a href="/photos/<%=photo.id%>">Show details</a></td>
   </tr>

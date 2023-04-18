@@ -41,9 +41,10 @@
          </td>
       <% elsif follow_request.status == "pending" %>
          <td>
-            <p>Request sent. <a href="/delete_follow_request/<%=follow_request.id%>">Cancel</a></p>
+            Request sent<a href="/delete_follow_request/<%=follow_request.id%>">Cancel</a>
          </td>
       <% end %>
+     
       <td><a href="users/<%= user.username %>">Show details</a></td>
    <% end %>
     <% end %>
