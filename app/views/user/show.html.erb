@@ -35,9 +35,14 @@
   
   <dt>Following</dt>
   <dd><%=@following.count%></dd>
+
+
   <%if session.fetch(:user_id) == @the_user.id%>
   <h4>Pending follow requests</h4>
-  
+    <%@pending_follower.each do |follower|%>
+    <%= follower.username %>
+    <%end%>
+    
   
   <dt>Edit user</dt>
   <dd>

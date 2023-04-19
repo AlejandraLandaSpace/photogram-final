@@ -24,4 +24,5 @@ class FollowRequest < ApplicationRecord
       self.status = "accepted"
     end
   end
+  
 end

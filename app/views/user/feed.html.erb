@@ -16,9 +16,11 @@
    
 
 
-      <div>
+    
        <%@following = FollowRequest.where({:sender_id => @the_user.id})%>
+
        <% follow_request = @current_user.follow_request_for(@the_user.id) %>
+
             <% if follow_request.nil? %>
               <form action="/insert_follow_request" method="post">
               <input type="hidden" name="query_recipient_id" value="<%=@the_user.id%>">
@@ -31,7 +33,7 @@
             Unfollow
           </a>
           <%end%>
-    </div>
+  
 
   </dd>
   
@@ -56,7 +58,9 @@
 </nav>
 
 
-<h2>Feed ()</h2>
+
+
+<h2> Feed (<%=@feed.count%>)</h2>
 
 <table border="1">
   <tr>
@@ -83,21 +87,28 @@
     <th></th>
   </tr>
 
+<%@feed.each do |user_post|%>
   <tr>
     <td>
-      <img src="https://robohash.org/necessitatibusquieos">
+    <img src="<%= user_post.image %>">
     </td>
 
     <td>
-      sharilyn
+       <%= user_post.id %>
     </td>
 
     <td>
-      All dwarfs are bastards in their father&#39;s eyes
+      <%=user_post.caption%>
     </td>
 
     <td>
-      over 5 years ago
+      <%=time_ago_in_words(user_post.created_at)%>
     </td>
-
+    <td>
+    <%=user_post.likes_count%>
+    </td>
+    <td>
+    <a href="photos/<%=user_post.id%>"> Show details</a>
+    </td>
   </tr>
+  <%end%>
