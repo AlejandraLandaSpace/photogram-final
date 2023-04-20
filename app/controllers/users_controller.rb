@@ -47,5 +47,14 @@ class UsersController < ApplicationController
 
     render({:template=>"user/feed.html.erb"})
   end
+  def discover
+    user = params.fetch("username")
+    matching_user = User.where({ :username => user }).first
+    @the_user = matching_user
+    the_photos = Photo.all
+    @photo = Photo.where({ owner_id: matching_user.id })
+
+    render({:template=>"user/discover.html.erb"})
+  end
 
 end
