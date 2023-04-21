@@ -16,7 +16,9 @@
 
       <div>
        <%@following = FollowRequest.where({:sender_id => @the_user.id})%>
+
        <% follow_request = @current_user.follow_request_for(@the_user.id) %>
+       
             <% if follow_request.nil? %>
               <form action="/insert_follow_request" method="post">
               <input type="hidden" name="query_recipient_id" value="<%=@the_user.id%>">

@@ -13,4 +13,7 @@
 #
 class Photo < ApplicationRecord
   belongs_to(:user)
+  belongs_to :owner, class_name: "User"
+  has_many :likes
+  has_many :liking_users, through: :likes, source: :user
 end

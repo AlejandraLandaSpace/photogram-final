@@ -18,7 +18,8 @@ class User < ApplicationRecord
   has_secure_password
   has_many(:photos)
   has_many(:follow_request)
-
+  has_many :likes
+  has_many :liked_photos, through: :likes, source: :photo
   # mount_uploader :image, ImageUploader
 
   def follow_request_for(other_user_id)

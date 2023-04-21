@@ -12,9 +12,9 @@
   <dd><%=@followers.count%></dd>
 
 
- <%@following = FollowRequest.where({:sender_id => @the_user.id})%>
+ <%following = FollowRequest.where({:sender_id => @the_user.id})%>
     <dt>Following</dt>
-  <dd><%=@following.count%></dd>
+  <dd><%=following.count%></dd>
 
 <nav>
   <ul>
@@ -34,7 +34,7 @@
 </nav>
 
 
-<h2>Discover ()</h2>
+<h2>Discover (<%=@photos.count%>)</h2>
 
 <table border="1">
   <tr>
@@ -61,14 +61,17 @@
     <th></th>
   </tr>
 
-
+   <%@photos.each do |photo|%>
   <tr>
-  <th></th>
-  <th></th>
-  <th></th>
-  <th></th>
-  <th></th>
-  <th>   <a href="/photos/<%=@photo.id%>">
+  <td><img src="<%=photo.image%>"></td>
+  <%owner = Photo.where({:id=> photo.owner_id})%>
+  <%user = User.where({:id => owner})%>
+  <td></td>
+  <td><%= photo.caption%></td>
+  <td><%= photo.created_at%></td>
+  <td><%= photo.likes_count%></td>
+  <td>   <a href="/photos/">
           Show details
-        </a></th>
+        </a></td>
   </tr>
+<%end%>

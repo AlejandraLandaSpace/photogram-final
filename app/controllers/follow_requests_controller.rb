@@ -1,8 +1,8 @@
 class FollowRequestsController < ApplicationController
   def index
-    @matching_follow_requests = FollowRequest.all
+    matching_follow_requests = FollowRequest.all
 
-    @list_of_follow_requests = @matching_follow_requests.order({ :created_at => :desc })
+    @list_of_follow_requests = matching_follow_requests.order({ :created_at => :desc })
 
     render({ :template => "follow_requests/index.html.erb" })
   end
