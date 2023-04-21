@@ -7,13 +7,38 @@
   <%else%>
   <dd>false</dd>
    <%end%>
-   <%@followers = FollowRequest.where({:recipient_id=>@the_user.id})%>
+   <% @followers = @the_user.receivedfollowrequests.count  %>
   <dt>Followers</dt>
-  <dd><%=@followers.count%></dd>
-
-   
+  <dd><%=@followers%></dd>
 
 
+  <%#if session.fetch(:user_id) == @the_user.id%>
+  <h4>Pending follow requests</h4>
+     <%@list_of_follow_request.where({ :recipient_id => @current_user.id }).each do |request| %>
+       <%if request.status == "pending"%>
+       <%= request.sender.username %>
+       <div>
+              <form action="/modify_follow_request/<%= request.id %>"  method="post" >
+
+                  <input type="hidden" id="recipient_id_box" name="query_recipient_id" value="<%= request.recipient_id %>">
+                  <input type="hidden" id="sender_id_box" name="query_sender_id" value="<%= request.sender_id %>">
+
+                <input type="hidden" id="status_box" name="query_status">
+
+                <button>
+                  Accept
+                </button>
+              </div>
+            <% end %>
+          <% end %>
+        </dd>
+
+  <%following =  @the_user.sentfollowrequests.count%>
+  <dt>Following</dt>
+  <dd><%=following%></dd>
+
+
+     <%if session.fetch(:user_id) != @the_user.id%>
       <div>
        <%@following = FollowRequest.where({:sender_id => @the_user.id})%>
 
@@ -34,16 +59,9 @@
     </div>
 
   </dd>
-  
-  <dt>Following</dt>
-  <dd><%=@following.count%></dd>
+ 
 
 
-  <%if session.fetch(:user_id) == @the_user.id%>
-  <h4>Pending follow requests</h4>
-    <%@pending_follower.each do |follower|%>
-    <%= follower.username %>
-    <%end%>
     
   
   <dt>Edit user</dt>
@@ -60,6 +78,8 @@
     </form>
   </dd>
   <%end%>
+
+
 <nav>
   <ul>
     <li>
@@ -77,7 +97,7 @@
   </ul>
 </nav>
 
-<h2>Own photos (<%=@photo.count%>)</h2>
+<h2>Own photos (<%=@the_user.photos.count%>)</h2>
 <table border="1">
   <tr>
     <th>
@@ -103,7 +123,7 @@
     <th></th>
   </tr>
  
-    <% @photo.each do |photo|%>
+    <% @the_user.photos.each do |photo| %>
   <tr>
   <td><img src="<%=photo.image%>"></td>
   <td><%=@the_user.username%></td>
@@ -113,4 +133,4 @@
   <td><a href="/photos/<%=photo.id%>">Show details</a></td>
   </tr>
      <% end %>
-  
+  </table>

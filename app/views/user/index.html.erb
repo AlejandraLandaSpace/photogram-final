@@ -1,55 +1,80 @@
-<h1>List of users</h1>
-<table border="1">
-   <tr>
-      <th>
-         Username
-      </th>
-      <th>
-         Private?
-      </th>
-      <th></th>
-      <th></th>
-   </tr>
-   <% @users.each do |user| %>
-   <tr>
-      <td><%= user.username %></td>
-      <% if user.private %>
-         <td>Yes</td>
-      <% else %>
-         <td>No</td>
-      <% end %>
+<H1>List of users
+    </h1>
 
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          Username
+        </th>
 
-       <%if session.fetch(:user_id) != nil%>
-      <% follow_request = @current_user.follow_request_for(user.id) %>
+        <th>
+          Private?
+        </th>
 
-      
-      <% if follow_request.nil? %>
-         <td>
-            <form action="/insert_follow_request" method="post">
-               <input type="hidden" name="query_recipient_id" value="<%= user.id %>">
-               <button>
-                  Follow
-               </button>
-            </form>
-         </td>
-         <td><a href="users/<%= user.username %>">Show details</a></td>
-         
-      <% elsif follow_request.status == "accepted" %>
-         <td>
-            <a href="/delete_follow_request/<%= follow_request.id %>">
-            Unfollow
+        <th>
+
+        </th>
+
+        <th>
+
+        </th>
+
+      </tr>
+
+      <% @list_of_users.each do |a_user| %>
+        <tr>
+          <td>
+            <%= a_user.username %>
+          </td>
+          <% if a_user.private == false %>
+            <td>
+              No
+            </td>
+          <% else %>
+            <td>
+              Yes
+            </td>
+          <% end %>
+          <% if @current_user != nil %>
+           <% request = a_user.receivedfollowrequests.where(:sender_id => @current_user.id ).first %>
+            <td>
+
+              <% if request == nil %>
+                <form action="/insert_follow_request" method="post">
+                  <input type="hidden" name="query_recipient_id" value="<%= a_user.id %>">
+                  <button>
+                    Follow
+                  </button>
+                </form>
+
+              <% elsif request.status == "pending" %>
+                Request sent.
+                <a href="/delete_follow_request/<%= %>">
+                  Cancel
+                </a>
+              <% else %>
+                <a href="/delete_follow_request/<%= %>">
+                  Unfollow
+                </a>
+
+              <% end %>
+            <% else %>
+              <td>
+              </td>
+
+            <% end %>
+          </td>
+          <td>
+            <a href="/users/<%= a_user.username %>">
+              Show details
             </a>
-         </td>
-         <td><a href="users/<%= user.username %>">Show details</a></td>
-      <% elsif follow_request.status == "pending" %>
-         <td> Request sent. 
-         <a href="/delete_follow_request/<%=follow_request.id%>">Cancel</a> </td>
-          <td><a href="users">Show details</a></td>
+
+          </td>
+        </tr>
+
       <% end %>
-     
-    
-   <% end %>
-     <% end %>
-   </tr>
-</table>
+    </table>
+  </div>
+</div>

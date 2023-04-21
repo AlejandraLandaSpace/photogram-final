@@ -1,40 +1,40 @@
-<h1><%=@the_user.username%></h1>
+<h1><%=@current_user.username%></h1>
 
 <dl>
   <dt>Private</dt>
-  <%if @the_user.private == true%>
+  <%if @current_user.private == true%>
   <dd>true</dd>
   <%else%>
   <dd>false</dd>
    <%end%>
-   <%@followers = FollowRequest.where({:recipient_id=>@the_user.id})%>
+   <%@followers = FollowRequest.where({:recipient_id=>@current_user.id})%>
   <dt>Followers</dt>
   <dd><%=@followers.count%></dd>
 
 
- <%following = FollowRequest.where({:sender_id => @the_user.id})%>
+ <%following = FollowRequest.where({:sender_id => @current_user.id})%>
     <dt>Following</dt>
   <dd><%=following.count%></dd>
 
 <nav>
   <ul>
     <li>
-      <a href="/users/<%=@the_user.username%>">Profile</a>
+      <a href="/users/<%=@current_user.username%>">Profile</a>
     </li>
     <li>
-      <a href="/users/<%=@the_user.username%>/liked_photos">Liked photos</a>
+      <a href="/users/<%=@current_user.username%>/liked_photos">Liked photos</a>
     </li>
     <li>
-      <a href="/users/<%=@the_user.username%>/feed">Feed</a>
+      <a href="/users/<%=@current_user.username%>/feed">Feed</a>
     </li>
     <li>
-      <a href="/users/<%=@the_user.username%>/discover">Discover</a>
+      <a href="/users/<%=@current_user.username%>/discover">Discover</a>
     </li>
   </ul>
 </nav>
 
 
-<h2>Discover (<%=@photos.count%>)</h2>
+<h2>Discover (<%= @accepted_follow_request_count%>)</h2>
 
 <table border="1">
   <tr>
@@ -61,17 +61,29 @@
     <th></th>
   </tr>
 
-   <%@photos.each do |photo|%>
+   <%@accepted_follow_request.each do |follower|%>
+   <% follower.recipient.likes.each do |photo| %>
   <tr>
-  <td><img src="<%=photo.image%>"></td>
-  <%owner = Photo.where({:id=> photo.owner_id})%>
-  <%user = User.where({:id => owner})%>
-  <td></td>
-  <td><%= photo.caption%></td>
-  <td><%= photo.created_at%></td>
-  <td><%= photo.likes_count%></td>
-  <td>   <a href="/photos/">
+  <td><img src="<%=photo.photo.image%>" class="img-responsive"></td>
+  <%# <%owner = Photo.where({:id=> photo.owner_id})%>
+  <%#user = User.where({:id => owner})%>
+     <td><%= photo.photo.owner.username%></td>
+  <td><%= photo.photo.caption%></td>
+  <td><%=time_ago_in_words(photo.photo.created_at)%></td>
+  <td><%= photo.photo.likes_count%></td>
+  <%if @current_user == nil%>
+    <td>
+      <a href="/user_sign_in">
+      Show details
+      </a>
+      </td>
+      <%else%>
+  <td>   <a href="/photos/<%photo.photo.id%>">
           Show details
         </a></td>
+
+<%end%>
+<%end%>
   </tr>
 <%end%>
+</table>

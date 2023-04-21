@@ -10,9 +10,11 @@
 #  sender_id    :integer
 #
 class FollowRequest < ApplicationRecord
-  belongs_to(:recipient, class_name: "User", foreign_key: "recipient_id")
+  belongs_to :recipient, { :required => true, :class_name => "User", :foreign_key => "recipient_id" }
+  
+  belongs_to :sender, { :required => true, :class_name => "User", :foreign_key => "sender_id" }
 
-  belongs_to(:sender, class_name: "User", foreign_key: "sender_id")
+  has_many  :following_photos, :through => :recipient, :source => :photos
 
   before_create :set_status
 
