@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     matching_user = User.where({ :username => user }).first
     @the_user = matching_user
 
-
+  
     follow_requests = FollowRequest.all
     @list_of_follow_request = follow_requests.order({:created_at => :desc})
     
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   
   def liked_photos
     @photos = @current_user.photos
-
+     
     render({:template=>"user/liked_photos.html.erb"})
   end
 

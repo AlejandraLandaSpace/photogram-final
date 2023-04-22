@@ -3,20 +3,16 @@ class PhotosController < ApplicationController
     matching_photos = Photo.all
 
     @list_of_photos = matching_photos.order({ :created_at => :desc })
-    # user = User.all
-    # @private_user = User.where({:private => false})
+
     render({ :template => "photos/index.html.erb" })
   end
 
   def show
-    
-    the_id = params.fetch("path_id")
-
-    @matching_photos = Photo.where({ :id => the_id })
-
-    @the_photo = @matching_photos.at(0)
-    
     if session.fetch(:user_id) != nil
+    the_id = params.fetch("path_id")
+    matching_photos = Photo.where({ :id => the_id })
+    @the_photo = matching_photos.at(0)
+    @user_like_checker = @the_photo.likes.where({ :fan_id => @current_user.id }).first 
     render({ :template => "photos/show.html.erb" })
     else
       redirect_to("/user_sign_in", { :alert => "You have to sign in first." })

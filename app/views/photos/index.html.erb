@@ -63,18 +63,18 @@
         </th>
 
       </tr>
-      <%if @private_user%>
-      <% @list_of_photos.each do |a_photo| %>
+       <% @list_of_photos.each do |a_photo| %>
+      <%if a_photo.owner.private != true%>
       <tr>
         <td>
-         <img src = "<%=a_photo.image%>">
+         <img src = "<%=a_photo.image%>" class="img-responsive">
         </td>
 
         <td>
           <%= a_photo.caption %>
         </td>
         <td>
-          <%=a_photo.id%>
+          <%=a_photo.owner.username%>
         </td>
 
         <td>
@@ -84,16 +84,24 @@
         <td>
           <%= a_photo.likes_count %>
         </td>
+          <% if @current_user == nil %>
 
+            <td>
+              <a href="/user_sign_in">
+                Show details
+              </a>
+            </td>
+          <% else %>
+            <td>
+              <a href="/photos/<%= a_photo.id %>">
+                Show details
+              </a>
+            </td>
 
-        <td>
-          <a href="/photos/<%= a_photo.id %>">
-            Show details
-          </a>
-        </td>
-      </tr>
+          <% end %>
+        </tr>
       <% end %>
-        <% end %>
+      <% end %>
     </table>
   </div>
 </div>
