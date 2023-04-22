@@ -136,13 +136,13 @@
       <td>
         <%=commenttt.author.username%>
       </td>
-        <%=commenttt.body%>
-      <td>
        
-      </td>
-        <%=time_ago_in_words(commenttt.created_at)%>
       <td>
-      
+        <%=commenttt.body%>
+      </td>
+       
+      <td>
+       <%=time_ago_in_words(commenttt.created_at)%>
       </td>
     </tr>  
  <%end%>
@@ -152,7 +152,7 @@
 
 <form action="/insert_comment" method="post">
   <input type="hidden" value="<%=@the_photo.id%>" name="query_photo_id">
-  <input type="hidden" id="author_id" name="query_author_id">
+  <input type="hidden" id="author_id" name="query_author_id" value="<%=@current_user.id%>">
   
  
   <textarea id="browser_comment" name="query_body" placeholder="Enter a comment..."></textarea>
