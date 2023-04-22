@@ -12,16 +12,15 @@
   <dd><%=@followers%></dd>
 
 
-  <%#if session.fetch(:user_id) == @the_user.id%>
   <h4>Pending follow requests</h4>
      <%@list_of_follow_request.where({ :recipient_id => @current_user.id }).each do |request| %>
        <%if request.status == "pending"%>
        <%= request.sender.username %>
        <div>
-              <form action="/modify_follow_request/<%= request.id %>"  method="post" >
+              <form action="/modify_follow_request/<%=request.id%>"  method="post" >
 
-                  <input type="hidden" id="recipient_id_box" name="query_recipient_id" value="<%= request.recipient_id %>">
-                  <input type="hidden" id="sender_id_box" name="query_sender_id" value="<%= request.sender_id %>">
+                  <input type="hidden" id="recipient_id_box" name="query_recipient_id" value="<%=request.recipient_id%>">
+                  <input type="hidden" id="sender_id_box" name="query_sender_id" value="<%=request.sender_id%>">
 
                 <input type="hidden" id="status_box" name="query_status">
 
@@ -33,14 +32,14 @@
           <% end %>
         </dd>
 
-  <%following =  @the_user.sentfollowrequests.count%>
+  <%following=@the_user.sentfollowrequests.count%>
   <dt>Following</dt>
   <dd><%=following%></dd>
 
 
      <%if session.fetch(:user_id) != @the_user.id%>
       <div>
-       <%@following = FollowRequest.where({:sender_id => @the_user.id})%>
+       <%@following =FollowRequest.where({:sender_id=>@the_user.id})%>
 
        <% follow_request = @current_user.follow_request_for(@the_user.id) %>
        
@@ -57,13 +56,14 @@
           </a>
           <%end%>
     </div>
+    <%end%>
 
   </dd>
  
 
 
     
-  
+   <%if session.fetch(:user_id) == @the_user.id%>
   <dt>Edit user</dt>
   <dd>
     <form action="/modify_user/<%=@the_user.id%>" method="post" >
