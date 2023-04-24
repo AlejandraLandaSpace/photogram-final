@@ -15,24 +15,8 @@
   </head>
 
   <body>
-      
-       <a href="/users">All users</a>
-      |
-      <a href="/photos">All public photos</a>
-   <%if session.fetch(:user_id) == nil%>
-  <a href="/user_sign_in">Sign in</a>
-      |
-      <a href="/user_sign_up">Sign up</a>
-  <%else%>
-  |
-   <a href="/">Home</a>
-      |
-      <a href="/edit_user_profile"><%=@current_user.username%></a>
-      |
-      <a href="/user_sign_out">Sign out</a>
-  <%end%>
-    <p style="color:green"><%= notice%></p>
-  <p style="color:red"><%= alert%></p>
+    <%= render "shared/flash" %>
+    <%= render "shared/nav" %>
     <%= yield %>
   </body>
 </html>
