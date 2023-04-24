@@ -1,7 +1,7 @@
 
-
 <h1><%=@current_user.username%></h1>
 
+ <!--private-->
 <dl>
   <dt>Private</dt>
   <%if @current_user.private == true%>
@@ -9,18 +9,15 @@
   <%else%>
   <dd>false</dd>
    <%end%>
-   <%@followers = FollowRequest.where({:recipient_id=>@the_user.id})%>
+
+    <!--follower-->
+  <%followers = @current_user.received_follow_requests%>
   <dt>Followers</dt>
-  <dd><%=@followers.count%></dd>
+  <dd><%=followers.count%></dd>
 
-   
-
-
-    
+ <!--following
        <%@following = FollowRequest.where({:sender_id => @the_user.id})%>
-
-       <% follow_request = @current_user.follow_request_for(@the_user.id) %>
-
+         <% follow_request = @current_user.follow_request_for(@the_user.id) %>
             <% if follow_request.nil? %>
               <form action="/insert_follow_request" method="post">
               <input type="hidden" name="query_recipient_id" value="<%=@the_user.id%>">
@@ -33,13 +30,17 @@
             Unfollow
           </a>
           <%end%>
-  
+    </div>
+    <%end%>
+  -->
 
   </dd>
-  
+   <!--following-->
+ <%following = @current_user.sentfollowrequests%>
   <dt>Following</dt>
-  <dd><%=@following.count%></dd>
+  <dd><%=following.count%></dd>
   
+  <!--user additional links-->
 <nav>
   <ul>
     <li>
@@ -59,7 +60,7 @@
 
 
 
-
+<!--feed table-->
 <h2> Feed (<%=@accepted_follow_request_count%>)</h2>
 
 <table border="1">
@@ -87,15 +88,16 @@
     <th></th>
   </tr>
 
+<!--feed content-->
 <%@accepted_follow_request.each do |follower|%>
 <%follower.following_photos.each do |user_post|%>
   <tr>
     <td>
-    <img src="<%= user_post.image %>">
+    <img src="<%=user_post.image%>">
     </td>
 
     <td>
-       <%= user_post.owner.username %>
+       <%=user_post.owner.username %>
     </td>
 
     <td>
@@ -108,6 +110,8 @@
     <td>
     <%=user_post.likes_count%>
     </td>
+
+
     <%if @current_user != nil%>
     <td>
     <a href="photos/<%=user_post.id%>"> Show details</a>

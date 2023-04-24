@@ -14,7 +14,7 @@ class FollowRequest < ApplicationRecord
   
   belongs_to :sender, { :required => true, :class_name => "User", :foreign_key => "sender_id" }
 
-  has_many  :following_photos, :through => :recipient, :source => :photos
+  has_many :following_photos, {:through => :recipient, :source => :photos}
 
   before_create :set_status
 

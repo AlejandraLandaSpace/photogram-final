@@ -1,21 +1,27 @@
 <h1><%=@current_user.username%></h1>
 
+  <!--checks if user is private-->
 <dl>
   <dt>Private</dt>
   <%if @current_user.private == true%>
-  <dd>true</dd>
+  <dd>Yes</dd>
   <%else%>
-  <dd>false</dd>
+  <dd>No</dd>
    <%end%>
-   <%@followers = FollowRequest.where({:recipient_id=>@current_user.id})%>
+
+  <!--followers-->
+   <%followers = @current_user.received_follow_requests%>
   <dt>Followers</dt>
-  <dd><%=@followers.count%></dd>
+  <dd><%=followers.count%></dd>
+  </dd>
 
-
- <%following = FollowRequest.where({:sender_id => @current_user.id})%>
-    <dt>Following</dt>
+   <!--following-->
+  <%following = @current_user.sentfollowrequests%>
+  <dt>Following</dt>
   <dd><%=following.count%></dd>
 
+
+<!--user additional links-->
 <nav>
   <ul>
     <li>
@@ -33,8 +39,9 @@
   </ul>
 </nav>
 
-
-<h2>Discover (<%= @accepted_follow_request_count%>)</h2>
+<!--discover-->
+  <%accepted_follow_request= @current_user.sentfollowrequests.where({ :status => "accepted"})%>
+<h2>Discover (<%= accepted_follow_request.count%>)</h2>
 
 <table border="1">
   <tr>
@@ -43,11 +50,11 @@
     </th>
 
     <th>
-      Owner
+      Caption
     </th>
 
     <th>
-      Caption
+      Owner
     </th>
 
     <th>
@@ -61,16 +68,27 @@
     <th></th>
   </tr>
 
-   <%@accepted_follow_request.each do |follower|%>
-   <% follower.recipient.likes.each do |photo| %>
+ <!--discover table info-->
+   <% accepted_follow_request.each do |following|%>
+   <% following.recipient.likes.each do |img| %>
+
   <tr>
-  <td><img src="<%=photo.photo.image%>" class="img-responsive"></td>
-  <%# <%owner = Photo.where({:id=> photo.owner_id})%>
-  <%#user = User.where({:id => owner})%>
-     <td><%= photo.photo.owner.username%></td>
-  <td><%= photo.photo.caption%></td>
-  <td><%=time_ago_in_words(photo.photo.created_at)%></td>
-  <td><%= photo.photo.likes_count%></td>
+  <td>
+  <img src="<%=img.photo.image%>" class="img-responsive">
+  </td>
+  <td>
+  <%=img.photo.caption%>
+  </td>
+  <td>
+  <%=img.photo.owner.username%>
+  </td>
+  <td>
+  <%=time_ago_in_words(img.photo.created_at).gsub("about", " ")%>
+  </td>
+  <td>
+  <%=img.photo.likes_count%>
+  </td>
+
   <%if @current_user == nil%>
     <td>
       <a href="/user_sign_in">
@@ -78,7 +96,7 @@
       </a>
       </td>
       <%else%>
-  <td>   <a href="/photos/<%photo.photo.id%>">
+  <td>   <a href="/photos/<%img.photo.id%>">
           Show details
         </a></td>
 

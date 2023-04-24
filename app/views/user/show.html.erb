@@ -1,5 +1,6 @@
 <h1><%=@the_user.username%></h1>
 
+<!--if the user is private display yes else no-->
 <dl>
   <dt>Private</dt>
   <%if @the_user.private == true%>
@@ -7,15 +8,17 @@
   <%else%>
   <dd>false</dd>
    <%end%>
-   <% @followers = @the_user.receivedfollowrequests.count  %>
+
+<!--checks the users followers-->
+   <% @followers = @the_user.received_follow_requests%>
   <dt>Followers</dt>
-  <dd><%=@followers%></dd>
+  <dd><%=@followers.count %></dd>
 
-
+<!--users pending follow requests-->
   <h4>Pending follow requests</h4>
-     <%@list_of_follow_request.where({ :recipient_id => @current_user.id }).each do |request| %>
+     <%@pending_followers.each do |request| %>
        <%if request.status == "pending"%>
-       <%= request.sender.username %>
+       <%= request.recipient.username %>
        <div>
               <form action="/modify_follow_request/<%=request.id%>"  method="post" >
 
@@ -32,11 +35,13 @@
           <% end %>
         </dd>
 
-  <%following=@the_user.sentfollowrequests.count%>
+<!--users number of followers-->
+  <%following=@the_user.sentfollowrequests%>
   <dt>Following</dt>
-  <dd><%=following%></dd>
+  <dd><%=following.count%></dd>
 
 
+<!--follow/unfollow-->
      <%if session.fetch(:user_id) != @the_user.id%>
       <div>
        <%@following =FollowRequest.where({:sender_id=>@the_user.id})%>
@@ -62,7 +67,7 @@
  
 
 
-    
+    <!--edit user form-->
    <%if session.fetch(:user_id) == @the_user.id%>
   <dt>Edit user</dt>
   <dd>
@@ -79,7 +84,7 @@
   </dd>
   <%end%>
 
-
+<!--user links-->
 <nav>
   <ul>
     <li>
@@ -97,6 +102,7 @@
   </ul>
 </nav>
 
+<!--owned photos-->
 <h2>Own photos (<%=@the_user.photos.count%>)</h2>
 <table border="1">
   <tr>
@@ -122,7 +128,7 @@
 
     <th></th>
   </tr>
- 
+ <!--users photos and photo info displayed-->
     <% @the_user.photos.each do |photo| %>
   <tr>
   <td><img src="<%=photo.image%>"></td>
